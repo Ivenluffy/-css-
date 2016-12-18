@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body,div,ul,li{margin:0;padding:0;}
+        img{border:none;}
+        ul{list-style:none;}
+        #images{width:980px;height:500px;position:absolute;left:0;top:0;right:0;bottom:0;margin:auto}
+        #images li{float:left;}
+/*
+        #images li div{width:196px;height:100px;}
+*/
+        /*box-sizing:border-box;border:1px solid #fff*/
+    </style>
+    <script src="js/jquery-3.1.0.js"></script>
+    <script>
+        $(function(){
+            var ul=$("#images");
+            var rows=5;
+            var cols=5;
+            for(var r=0;r<rows;r++){
+                for(var c=0;c<cols;c++  ){
+                    $("<li><div></div></li>").find("div")
+                            .width(ul.width()/cols)//每个li宽度
+                            .height(ul.height()/rows)
+                            .css({"background-image":"url(images/2.jpg)"})
+                            .css({"background-position":c*100/(cols-1)+"%"+r*100/(rows-1)+"%"})
+                            .end()
+                            .attr("index",r*cols+c)//给每个li加上索引号
+                    .appendTo(ul);
+                }
+            }
+            $("#split").click(function(){
+                var padding=1;
+                ul.find("li").css("padding",padding+"px");
+/*
+                ul.width(ul.width()+padding*2*cols);
+                ul.height(ul.height()+padding*2*cols);
+*/
+                ul.width(ul.find("li").eq(0).outerWidth()*cols);
+                ul.height(ul.find("li").eq(0).outerHeight()*rows);
+            });
+            //显示所有
+            $("#showAll").click(function(){
+                $("#images li div").each(function(i){
+                    $(this).css({"background-image":"url(images/"+i+".jpg)","background-size":"cover"})
+                });
+            });
+            //半隐藏所有
+            $("#hide").click(function(){
+                $("#images li").each(function(){
+                    $(this).delay(Math.random()*500+500).animate({"opacity":"0.5"},Math.random()*1000+500)
+                });
+            });
+            $("#show").click(function(){
+                $("#images li").each(function(){
+                    $(this).delay(Math.random()*500+500).animate({"opacity":"1"},Math.random()*100+500)
+                });
+            });
+            //先隐藏后显示
+            $("#hideAndShow").click(function(){
+                $().interval
+                $("#images li").each(function(){
+                    $(this).delay(Math.random()*500+500).animate({"opacity":"0"},Math.random()*1000+500).delay(Math.random()*500+500).animate({"opacity":"1"},Math.random()*1000+500)
+
+                });
+            });
+            $("#images li").click(function(){
+                $(this).find("div").css({"background-image":"url(images/"+$(this).attr("index")+".jpg)"})
+            });
+
+
+
+
+        });
+    </script>
+</head>
+<body style="background:#d9edf7">
+<input type="button" id="split" value="拆分">
+<input type="button" id="showAll" value="显示全部">
+<input type="button" id="hide" value="半隐藏">
+<input type="button" id="hideAndShow" value="隐藏显示">
+
+<div class="mid">
+    <ul id="images">
+
+    </ul>
+</div>
+</body>
+</html>
